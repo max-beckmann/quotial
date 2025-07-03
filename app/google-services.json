@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "520084789955",
+    "project_id": "quotial-667ab",
+    "storage_bucket": "quotial-667ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520084789955:android:2adb7a391b0926a3d76076",
+        "android_client_info": {
+          "package_name": "com.max.quotial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9xDuoVTg_preyuzxjWt_5azhSBVik17Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
