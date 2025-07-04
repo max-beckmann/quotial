@@ -3,6 +3,7 @@ package com.max.quotial.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.Post
+import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.FirebasePostRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,12 +12,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class PostViewModel : ViewModel() {
-    private val repository = FirebasePostRepository()
+    private val postRepository = FirebasePostRepository()
+    private val authRepository = AuthRepository()
 
     private val _uiState = MutableStateFlow(PostUiState())
     val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
 
-    val posts: Flow<List<Post>> = repository.getPosts()
+    val posts: Flow<List<Post>> = postRepository.getPosts()
 
     fun submitPost(content: String) {
         if (content.isBlank()) return
@@ -27,7 +29,17 @@ class PostViewModel : ViewModel() {
                 error = null,
             )
 
-            repository.createPost(content).fold(
+            val userId = authRepository.getUserId()
+            if (userId == null) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = "User not logged in"
+                )
+                
+                return@launch
+            }
+
+            postRepository.createPost(content, userId).fold(
                 onSuccess = {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,

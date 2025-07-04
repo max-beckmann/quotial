@@ -32,7 +32,7 @@ class FirebasePostRepository {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e(
-                    "[FirebasePostRepository]",
+                    "FirebasePostRepository",
                     "Error while reading posts",
                     databaseError.toException()
                 )
@@ -45,25 +45,26 @@ class FirebasePostRepository {
         awaitClose { postsRef.removeEventListener(listener) }
     }
 
-    suspend fun createPost(content: String): Result<Post> = suspendCoroutine { continuation ->
-        val id = postsRef.push().key ?: run {
-            continuation.resume(Result.failure(Exception("Error while creating post ID")))
-            return@suspendCoroutine
+    suspend fun createPost(content: String, userId: String): Result<Post> =
+        suspendCoroutine { continuation ->
+            val id = postsRef.push().key ?: run {
+                continuation.resume(Result.failure(Exception("Error while creating post ID")))
+                return@suspendCoroutine
+            }
+
+            val post = Post(
+                id,
+                content = content,
+                timestamp = System.currentTimeMillis(),
+                userId,
+            )
+
+            postsRef.child(id).setValue(post)
+                .addOnSuccessListener {
+                    continuation.resume(Result.success(post))
+                }
+                .addOnFailureListener { exception ->
+                    continuation.resume(Result.failure(exception))
+                }
         }
-
-        val post = Post(
-            id,
-            content = content,
-            timestamp = System.currentTimeMillis(),
-            userId = "",
-        )
-
-        postsRef.child(id).setValue(post)
-            .addOnSuccessListener {
-                continuation.resume(Result.success(post))
-            }
-            .addOnFailureListener { exception ->
-                continuation.resume(Result.failure(exception))
-            }
-    }
 }

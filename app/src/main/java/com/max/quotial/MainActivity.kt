@@ -5,16 +5,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.google.firebase.auth.FirebaseAuth
+import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.ui.screen.PostsScreen
 import com.max.quotial.ui.theme.QuotialTheme
 
 class MainActivity : ComponentActivity() {
+    private val authRepository = AuthRepository()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
+        if (!authRepository.isUserLoggedIn()) {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
         }

@@ -17,11 +17,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.max.quotial.ui.component.QuoteInput
 import com.max.quotial.ui.viewmodel.PostViewModel
 
 @Composable
-fun PostsScreen(viewModel: PostViewModel = PostViewModel()) {
+fun PostsScreen(viewModel: PostViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val posts by viewModel.posts.collectAsState(initial = emptyList())
 
