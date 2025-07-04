@@ -14,8 +14,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class FirebasePostRepository {
-    private val database =
-        Firebase.database("https://quotial-667ab-default-rtdb.europe-west1.firebasedatabase.app")
+    private val database = Firebase.database
     private val postsRef = database.getReference("posts")
 
     fun getPosts(): Flow<List<Post>> = callbackFlow {
