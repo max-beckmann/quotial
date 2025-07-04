@@ -1,9 +1,13 @@
 package com.max.quotial.ui.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,12 +42,18 @@ fun PostsScreen(viewModel: PostViewModel = PostViewModel()) {
         QuoteInput(
             text = inputValue,
             onTextChange = { inputValue = it },
-            onSubmit = {},
+            onSubmit = { viewModel.submitPost(inputValue) },
             isLoading = uiState.isLoading
         )
+        Text("Posts:")
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(vertical = 8.dp)
+        ) {
+            items(posts, key = { it.id }) { post ->
+                Text(post.content)
+            }
+        }
     }
-
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth()
-    ) {}
 }

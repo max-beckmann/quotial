@@ -27,7 +27,7 @@ class PostViewModel : ViewModel() {
                 error = null,
             )
 
-            /*repository.createPost(content).fold(
+            repository.createPost(content).fold(
                 onSuccess = {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
@@ -40,7 +40,7 @@ class PostViewModel : ViewModel() {
                         error = exception.message,
                     )
                 },
-            )*/
+            )
         }
     }
 

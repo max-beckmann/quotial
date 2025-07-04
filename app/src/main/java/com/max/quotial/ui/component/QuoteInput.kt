@@ -19,11 +19,7 @@ fun QuoteInput(
     onSubmit: () -> Unit,
     isLoading: Boolean,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
+    Box(modifier = Modifier.fillMaxWidth()) {
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
