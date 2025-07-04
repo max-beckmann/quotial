@@ -1,5 +1,6 @@
 package com.max.quotial
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,18 +11,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.max.quotial.ui.theme.QuotialTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val user = Firebase.auth.currentUser
+        if (user == null) {
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+        }
+
         enableEdgeToEdge()
         setContent {
             QuotialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = user?.displayName ?: "unknown user",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -36,12 +45,4 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         text = "Hello $name!",
         modifier = modifier
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    QuotialTheme {
-        Greeting("Android")
-    }
 }
