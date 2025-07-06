@@ -5,5 +5,6 @@ data class Post(
     val content: String = "",
     val timestamp: Long = System.currentTimeMillis(),
     val userId: String = "",
+    val username: String = "",
 ) {
 }

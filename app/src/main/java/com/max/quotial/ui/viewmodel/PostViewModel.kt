@@ -29,17 +29,17 @@ class PostViewModel : ViewModel() {
                 error = null,
             )
 
-            val userId = authRepository.getUserId()
-            if (userId == null) {
+            val user = authRepository.getUser()
+            if (user == null) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     error = "User not logged in"
                 )
-                
+
                 return@launch
             }
 
-            postRepository.createPost(content, userId).fold(
+            postRepository.createPost(content, user).fold(
                 onSuccess = {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,

@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.max.quotial.ui.component.PostCard
 import com.max.quotial.ui.component.QuoteInput
 import com.max.quotial.ui.viewmodel.PostViewModel
 
@@ -53,7 +54,7 @@ fun PostsScreen(viewModel: PostViewModel = viewModel()) {
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(posts, key = { it.id }) { post ->
-                Text(post.content)
+                PostCard(post)
             }
         }
     }

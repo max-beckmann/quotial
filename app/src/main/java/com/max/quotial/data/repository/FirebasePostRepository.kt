@@ -2,6 +2,7 @@ package com.max.quotial.data.repository
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -44,7 +45,7 @@ class FirebasePostRepository {
         awaitClose { postsRef.removeEventListener(listener) }
     }
 
-    suspend fun createPost(content: String, userId: String): Result<Post> =
+    suspend fun createPost(content: String, user: FirebaseUser): Result<Post> =
         suspendCoroutine { continuation ->
             val id = postsRef.push().key ?: run {
                 continuation.resume(Result.failure(Exception("Error while creating post ID")))
@@ -55,7 +56,8 @@ class FirebasePostRepository {
                 id,
                 content = content,
                 timestamp = System.currentTimeMillis(),
-                userId,
+                userId = user.uid,
+                username = user.displayName ?: "Anonymous",
             )
 
             postsRef.child(id).setValue(post)
