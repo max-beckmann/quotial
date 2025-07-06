@@ -3,6 +3,7 @@ package com.max.quotial.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.Post
+import com.max.quotial.data.model.Quote
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.FirebasePostRepository
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +21,8 @@ class PostViewModel : ViewModel() {
 
     val posts: Flow<List<Post>> = postRepository.getPosts()
 
-    fun submitPost(content: String) {
-        if (content.isBlank()) return
+    fun submitPost(quote: Quote) {
+        if (quote.content.isBlank() || quote.source.isBlank()) return
 
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
@@ -39,7 +40,7 @@ class PostViewModel : ViewModel() {
                 return@launch
             }
 
-            postRepository.createPost(content, user).fold(
+            postRepository.createPost(quote, user).fold(
                 onSuccess = {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,

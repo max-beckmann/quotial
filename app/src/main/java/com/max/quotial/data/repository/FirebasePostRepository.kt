@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import com.max.quotial.data.model.Post
+import com.max.quotial.data.model.Quote
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -45,7 +46,7 @@ class FirebasePostRepository {
         awaitClose { postsRef.removeEventListener(listener) }
     }
 
-    suspend fun createPost(content: String, user: FirebaseUser): Result<Post> =
+    suspend fun createPost(quote: Quote, user: FirebaseUser): Result<Post> =
         suspendCoroutine { continuation ->
             val id = postsRef.push().key ?: run {
                 continuation.resume(Result.failure(Exception("Error while creating post ID")))
@@ -54,10 +55,10 @@ class FirebasePostRepository {
 
             val post = Post(
                 id,
-                content = content,
                 timestamp = System.currentTimeMillis(),
                 userId = user.uid,
                 username = user.displayName ?: "Anonymous",
+                quote,
             )
 
             postsRef.child(id).setValue(post)
