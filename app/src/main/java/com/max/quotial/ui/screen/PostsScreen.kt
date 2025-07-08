@@ -24,12 +24,16 @@ import com.max.quotial.data.model.Quote
 import com.max.quotial.ui.component.PostCard
 import com.max.quotial.ui.component.QuoteInput
 import com.max.quotial.ui.viewmodel.PostViewModel
+import com.max.quotial.ui.viewmodel.SubmissionViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PostsScreen(viewModel: PostViewModel = viewModel()) {
-    val uiState by viewModel.uiState.collectAsState()
-    val posts by viewModel.posts.collectAsState(initial = emptyList())
+fun PostsScreen(
+    submissionViewModel: SubmissionViewModel = viewModel(),
+    postViewModel: PostViewModel = viewModel()
+) {
+    val uiState by submissionViewModel.uiState.collectAsState()
+    val posts by submissionViewModel.posts.collectAsState(initial = emptyList())
 
     var quoteContent by rememberSaveable { mutableStateOf("") }
     var quoteSource by rememberSaveable { mutableStateOf("") }
@@ -38,7 +42,7 @@ fun PostsScreen(viewModel: PostViewModel = viewModel()) {
         if (uiState.isSuccess) {
             quoteContent = ""
             quoteSource = ""
-            viewModel.clear()
+            submissionViewModel.clear()
         }
     }
 
@@ -52,7 +56,7 @@ fun PostsScreen(viewModel: PostViewModel = viewModel()) {
             quoteSource,
             onContentChange = { quoteContent = it },
             onSourceChange = { quoteSource = it },
-            onSubmit = { viewModel.submitPost(Quote(quoteContent, quoteSource)) },
+            onSubmit = { submissionViewModel.submitPost(Quote(quoteContent, quoteSource)) },
             isLoading = uiState.isLoading
         )
         Text("Posts:")
@@ -62,7 +66,7 @@ fun PostsScreen(viewModel: PostViewModel = viewModel()) {
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(posts, key = { it.id }) { post ->
-                PostCard(post)
+                PostCard(post, postViewModel)
             }
         }
     }

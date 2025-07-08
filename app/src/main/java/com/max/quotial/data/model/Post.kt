@@ -6,5 +6,7 @@ data class Post(
     val userId: String = "",
     val username: String = "",
     val quote: Quote = Quote(),
+    val upvotes: Int = 0,
+    val downvotes: Int = 0,
 ) {
 }
