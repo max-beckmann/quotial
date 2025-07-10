@@ -35,7 +35,7 @@ fun PostsScreen(
     postViewModel: PostViewModel = viewModel()
 ) {
     val uiState by submissionViewModel.uiState.collectAsState()
-    val posts by submissionViewModel.posts.collectAsState(initial = emptyList())
+    val posts by postViewModel.postsLiveData.observeAsState(initial = emptyList())
     val userVotes by postViewModel.userVotesLiveData.observeAsState(initial = emptyMap())
     val activeVotePostIds by postViewModel.activeVotePostIds.observeAsState(initial = emptySet())
 

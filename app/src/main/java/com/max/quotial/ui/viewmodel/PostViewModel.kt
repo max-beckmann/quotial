@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.VoteType
 import com.max.quotial.data.repository.AuthRepository
+import com.max.quotial.data.repository.PostRepository
 import com.max.quotial.data.repository.VoteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,8 +15,19 @@ import kotlinx.coroutines.launch
 
 class PostViewModel : ViewModel() {
     //TODO: replace by dependency injection
+    private val postRepository = PostRepository()
     private val voteRepository = VoteRepository()
     private val authRepository = AuthRepository()
+
+
+    private val posts = postRepository.getPosts()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    val postsLiveData = posts.asLiveData();
 
     private val userVotes = voteRepository.getVotesForUser(authRepository.getUser()!!.uid)
         .stateIn(
