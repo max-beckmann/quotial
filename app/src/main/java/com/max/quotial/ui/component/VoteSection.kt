@@ -2,9 +2,12 @@ package com.max.quotial.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +22,7 @@ import com.max.quotial.data.model.score
 fun VoteSection(
     post: Post,
     userVote: VoteType,
+    isVoting: Boolean,
     onVote: (VoteType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -29,28 +33,30 @@ fun VoteSection(
     ) {
         Text(post.score.toString())
 
-        OutlinedButton(
+        IconButton(
             onClick = {
                 onVote(if (userVote == VoteType.UPVOTE) VoteType.NONE else VoteType.UPVOTE)
             },
-            shape = MaterialTheme.shapes.small,
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (userVote == VoteType.UPVOTE) Color.Green else Color.Transparent
-            )
+            enabled = !isVoting,
         ) {
-            Text("Upvote")
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowUp,
+                contentDescription = "Upvote",
+                tint = if (userVote == VoteType.UPVOTE) Color.Green else MaterialTheme.colorScheme.surface
+            )
         }
 
-        OutlinedButton(
+        IconButton(
             onClick = {
                 onVote(if (userVote == VoteType.DOWNVOTE) VoteType.NONE else VoteType.DOWNVOTE)
             },
-            shape = MaterialTheme.shapes.small,
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (userVote == VoteType.DOWNVOTE) Color.Red else Color.Transparent
-            )
+            enabled = !isVoting,
         ) {
-            Text("Downvote")
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = "Downvote",
+                tint = if (userVote == VoteType.DOWNVOTE) Color.Red else MaterialTheme.colorScheme.surface
+            )
         }
     }
 

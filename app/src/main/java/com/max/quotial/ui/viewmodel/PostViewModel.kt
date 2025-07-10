@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.VoteType
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.VoteRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,6 +26,9 @@ class PostViewModel : ViewModel() {
 
     val userVotesLiveData = userVotes.asLiveData();
 
+    private val _activeVotePostIds = MutableStateFlow(emptySet<String>())
+    val activeVotePostIds = _activeVotePostIds.asLiveData()
+
     fun vote(postId: String, vote: VoteType) {
         viewModelScope.launch {
             try {
@@ -35,9 +39,12 @@ class PostViewModel : ViewModel() {
                 }
                 val userId = user.uid;
 
+                _activeVotePostIds.value.plus(postId)
                 voteRepository.vote(postId, userId, vote)
             } catch (e: Exception) {
                 Log.e("PostViewModel", "vote", e);
+            } finally {
+                _activeVotePostIds.value.minus(postId)
             }
         }
     }

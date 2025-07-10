@@ -37,6 +37,7 @@ fun PostsScreen(
     val uiState by submissionViewModel.uiState.collectAsState()
     val posts by submissionViewModel.posts.collectAsState(initial = emptyList())
     val userVotes by postViewModel.userVotesLiveData.observeAsState(initial = emptyMap())
+    val activeVotePostIds by postViewModel.activeVotePostIds.observeAsState(initial = emptySet())
 
     var quoteContent by rememberSaveable { mutableStateOf("") }
     var quoteSource by rememberSaveable { mutableStateOf("") }
@@ -72,6 +73,7 @@ fun PostsScreen(
                 PostCard(
                     post,
                     userVote = userVotes[post.id] ?: VoteType.NONE,
+                    isVoting = activeVotePostIds.contains(post.id),
                     onVote = { vote ->
                         postViewModel.vote(post.id, vote)
                     })

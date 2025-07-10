@@ -29,6 +29,7 @@ import com.max.quotial.util.toDateTimeString
 fun PostCard(
     post: Post,
     userVote: VoteType,
+    isVoting: Boolean,
     onVote: (VoteType) -> Unit,
 ) {
     Card(
@@ -73,6 +74,7 @@ fun PostCard(
             VoteSection(
                 post,
                 userVote,
+                isVoting,
                 onVote,
                 modifier = Modifier.fillMaxWidth()
             )
