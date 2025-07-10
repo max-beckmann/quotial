@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.max.quotial.data.model.Quote
+import com.max.quotial.data.model.VoteType
 import com.max.quotial.ui.component.PostCard
 import com.max.quotial.ui.component.QuoteInput
 import com.max.quotial.ui.viewmodel.PostViewModel
@@ -34,6 +36,7 @@ fun PostsScreen(
 ) {
     val uiState by submissionViewModel.uiState.collectAsState()
     val posts by submissionViewModel.posts.collectAsState(initial = emptyList())
+    val userVotes by postViewModel.userVotesLiveData.observeAsState(initial = emptyMap())
 
     var quoteContent by rememberSaveable { mutableStateOf("") }
     var quoteSource by rememberSaveable { mutableStateOf("") }
@@ -66,7 +69,12 @@ fun PostsScreen(
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(posts, key = { it.id }) { post ->
-                PostCard(post, postViewModel)
+                PostCard(
+                    post,
+                    userVote = userVotes[post.id] ?: VoteType.NONE,
+                    onVote = { vote ->
+                        postViewModel.vote(post.id, vote)
+                    })
             }
         }
     }

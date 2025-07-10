@@ -10,3 +10,5 @@ data class Post(
     val downvotes: Int = 0,
 ) {
 }
+
+val Post.score: Int get() = upvotes - downvotes
