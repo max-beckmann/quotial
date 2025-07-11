@@ -7,8 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.navigation.compose.rememberNavController
 import com.max.quotial.data.repository.AuthRepository
-import com.max.quotial.ui.screen.PostsScreen
+import com.max.quotial.ui.navigation.AppNavigation
 import com.max.quotial.ui.theme.QuotialTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,8 +26,10 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+
             QuotialTheme {
-                PostsScreen()
+                AppNavigation(navController)
             }
         }
     }
