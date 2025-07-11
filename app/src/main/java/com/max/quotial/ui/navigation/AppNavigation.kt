@@ -14,9 +14,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.max.quotial.ui.screen.GroupCreationScreen
 import com.max.quotial.ui.screen.GroupsOverviewScreen
 import com.max.quotial.ui.screen.PostsScreen
 import com.max.quotial.ui.screen.ProfileScreen
@@ -46,10 +48,23 @@ fun AppNavigation(navController: NavHostController) {
         NavHost(
             navController,
             startDestination = "posts_screen",
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
             composable("posts_screen") { PostsScreen() }
-            composable("groups_overview_screen") { GroupsOverviewScreen() }
+            composable("groups_overview_screen") {
+                GroupsOverviewScreen(onCreateGroupClick = {
+                    navController.navigate(
+                        "group_creation_screen"
+                    )
+                })
+            }
+            composable("group_creation_screen") {
+                GroupCreationScreen(onGroupCreated = {
+                    navController.navigate("groups_overview_screen")
+                })
+            }
             composable("profile_screen") { ProfileScreen() }
         }
     }
