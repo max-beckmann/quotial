@@ -1,13 +1,18 @@
 package com.max.quotial.data.repository
 
+import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import com.max.quotial.data.model.Group
 import com.max.quotial.data.model.GroupMember
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -73,6 +78,35 @@ class GroupRepository {
         }
 
     fun leaveGroup(groupId: String, userId: String) {}
+
+    fun getAllGroups(): Flow<List<Group>> = callbackFlow {
+        val listener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val groups = mutableListOf<Group>()
+                for (childSnapshot in dataSnapshot.children) {
+                    val group = childSnapshot.getValue(Group::class.java)
+                    group?.let { groups.add(it) }
+                }
+
+                trySend(groups)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e(
+                    "FirebasePostRepository",
+                    "Error while reading posts",
+                    databaseError.toException()
+                )
+
+                close(databaseError.toException())
+            }
+        }
+
+        val groupsRef = database.getReference("groups")
+
+        groupsRef.addValueEventListener(listener)
+        awaitClose { groupsRef.removeEventListener(listener) }
+    }
 
     fun getUserGroups() {}
 }
