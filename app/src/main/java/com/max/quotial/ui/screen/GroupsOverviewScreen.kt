@@ -19,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.max.quotial.ui.component.GroupCard
 import com.max.quotial.ui.viewmodel.GroupViewModel
 
 @Composable
@@ -36,7 +37,7 @@ fun GroupsOverviewScreen(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(groups, key = { it.id }) { group ->
-                    Text(group.name)
+                    GroupCard(group)
                 }
             }
         } else {
