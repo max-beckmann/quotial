@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.max.quotial.ui.screen.GroupsOverviewScreen
 import com.max.quotial.ui.screen.PostsScreen
+import com.max.quotial.ui.screen.ProfileScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -49,6 +50,7 @@ fun AppNavigation(navController: NavHostController) {
         ) {
             composable("posts_screen") { PostsScreen() }
             composable("groups_overview_screen") { GroupsOverviewScreen() }
+            composable("profile_screen") { ProfileScreen() }
         }
     }
 }
