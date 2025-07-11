@@ -23,6 +23,15 @@ class GroupViewModel : ViewModel() {
 
     val groupsLiveData = groups.asLiveData()
 
+    private val memberships = groupRepository.getUserGroups(authRepository.getUserId())
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    val membershipsLiveData = memberships.asLiveData()
+
     fun createGroup(name: String, description: String?) {
         viewModelScope.launch {
             try {

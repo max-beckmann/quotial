@@ -93,8 +93,8 @@ class GroupRepository {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e(
-                    "FirebasePostRepository",
-                    "Error while reading posts",
+                    "GroupRepository",
+                    "Error while reading groups",
                     databaseError.toException()
                 )
 
@@ -108,5 +108,32 @@ class GroupRepository {
         awaitClose { groupsRef.removeEventListener(listener) }
     }
 
-    fun getUserGroups() {}
+    fun getUserGroups(userId: String): Flow<List<String>> = callbackFlow {
+        val listener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val groups = mutableListOf<String>()
+                for (childSnapshot in dataSnapshot.children) {
+                    val group = childSnapshot.key
+                    if (group != null) groups.add(group)
+                }
+
+                trySend(groups)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e(
+                    "GroupRepository",
+                    "Error while reading user groups",
+                    databaseError.toException()
+                )
+
+                close(databaseError.toException())
+            }
+        }
+
+        val userGroupsRef = database.getReference("userGroups").child(userId)
+
+        userGroupsRef.addValueEventListener(listener)
+        awaitClose { userGroupsRef.removeEventListener(listener) }
+    }
 }

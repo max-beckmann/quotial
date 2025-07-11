@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +20,8 @@ import com.max.quotial.data.model.Group
 
 @Composable
 fun GroupCard(
-    group: Group
+    group: Group,
+    isMember: Boolean
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -32,8 +36,12 @@ fun GroupCard(
                 Text(group.description, color = MaterialTheme.colorScheme.outline)
             }
 
-            Button(onClick = {}) {
-                Text("join")
+            if (isMember) {
+                Icon(Icons.Default.Check, contentDescription = "joined")
+            } else {
+                Button(onClick = {}) {
+                    Text("join")
+                }
             }
         }
     }
