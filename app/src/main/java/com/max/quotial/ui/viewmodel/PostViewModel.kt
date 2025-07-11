@@ -27,7 +27,7 @@ class PostViewModel : ViewModel() {
             initialValue = emptyList()
         )
 
-    val postsLiveData = posts.asLiveData();
+    val postsLiveData = posts.asLiveData()
 
     private val userVotes = voteRepository.getVotesForUser(authRepository.getUser()!!.uid)
         .stateIn(
