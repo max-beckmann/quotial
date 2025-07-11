@@ -1,8 +1,13 @@
 package com.max.quotial.data.repository
 
 import com.google.firebase.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
 import com.google.firebase.database.database
 import com.max.quotial.data.model.Group
+import com.max.quotial.data.model.GroupMember
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -34,7 +39,39 @@ class GroupRepository {
                 }
         }
 
-    fun joinGroup(groupId: String, userId: String) {}
+    suspend fun joinGroup(groupId: String, userId: String): Result<Unit> =
+        suspendCoroutine { continuation ->
+            val updates = mutableMapOf<String, Any?>()
+
+            val groupMember = GroupMember(
+                userId,
+                role = "member",
+                joinedAt = System.currentTimeMillis()
+            )
+
+            updates["groupMembers/$groupId/$userId"] = groupMember
+            updates["userGroups/$userId/$groupId"] = true
+
+            database.getReference("groups").child(groupId).child("memberCount")
+                .runTransaction(object : Transaction.Handler {
+                    override fun doTransaction(currentData: MutableData): Transaction.Result {
+                        val currentCount = currentData.getValue(Int::class.java) ?: 0
+                        currentData.value = currentCount + 1
+                        return Transaction.success(currentData)
+                    }
+
+                    override fun onComplete(
+                        error: DatabaseError?,
+                        committed: Boolean,
+                        currentData: DataSnapshot?
+                    ) {
+                        if (committed) {
+                            database.reference.updateChildren(updates)
+                        }
+                    }
+                })
+        }
+
     fun leaveGroup(groupId: String, userId: String) {}
 
     fun getUserGroups() {}

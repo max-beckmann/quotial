@@ -12,6 +12,6 @@ data class Group(
 
 data class GroupMember(
     val userId: String = "",
-    val groupId: String = "",
+    val role: String = "member",
     val joinedAt: Long = System.currentTimeMillis(),
 )

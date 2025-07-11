@@ -10,6 +10,10 @@ class AuthRepository {
         return auth.currentUser
     }
 
+    fun getUserId(): String {
+        return getUser()?.uid ?: throw Exception("Error while reading user ID")
+    }
+
     fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }

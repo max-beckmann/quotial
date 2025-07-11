@@ -44,12 +44,7 @@ class PostViewModel : ViewModel() {
     fun vote(postId: String, vote: VoteType) {
         viewModelScope.launch {
             try {
-                //TODO: replace by dependency injection
-                val user = authRepository.getUser()
-                if (user == null) {
-                    return@launch
-                }
-                val userId = user.uid;
+                val userId = authRepository.getUserId();
 
                 _activeVotePostIds.value.plus(postId)
                 voteRepository.vote(postId, userId, vote)
