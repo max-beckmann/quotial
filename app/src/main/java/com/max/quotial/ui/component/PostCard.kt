@@ -55,6 +55,12 @@ fun PostCard(
                 )
             }
 
+            Text(
+                text = "in ${post.groupName ?: "General"}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
+            )
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(

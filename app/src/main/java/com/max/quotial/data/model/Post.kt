@@ -5,6 +5,8 @@ data class Post(
     val timestamp: Long = System.currentTimeMillis(),
     val userId: String = "",
     val username: String = "",
+    val groupId: String? = null,
+    val groupName: String? = null,
     val quote: Quote = Quote(),
     val upvotes: Int = 0,
     val downvotes: Int = 0,

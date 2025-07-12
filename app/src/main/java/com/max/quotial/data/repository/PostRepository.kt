@@ -58,6 +58,8 @@ class PostRepository {
                 timestamp = System.currentTimeMillis(),
                 userId = user.uid,
                 username = user.displayName ?: "Anonymous",
+                groupId = null,
+                groupName = null,
                 quote,
             )
 
