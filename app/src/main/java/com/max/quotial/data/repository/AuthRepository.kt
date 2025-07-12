@@ -6,12 +6,12 @@ import com.google.firebase.auth.FirebaseUser
 class AuthRepository {
     private val auth = FirebaseAuth.getInstance()
 
-    fun getUser(): FirebaseUser? {
-        return auth.currentUser
+    fun getUser(): FirebaseUser {
+        return auth.currentUser ?: throw Exception("Error while reading user")
     }
 
     fun getUserId(): String {
-        return getUser()?.uid ?: throw Exception("Error while reading user ID")
+        return getUser().uid
     }
 
     fun isUserLoggedIn(): Boolean {

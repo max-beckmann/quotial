@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             QuotialTheme {
-                AppNavigation(navController)
+                AppNavigation(navController, authRepository)
             }
         }
     }

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.ui.screen.GroupCreationScreen
 import com.max.quotial.ui.screen.GroupsOverviewScreen
 import com.max.quotial.ui.screen.PostsScreen
@@ -25,7 +26,10 @@ import com.max.quotial.ui.screen.ProfileScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(
+    navController: NavHostController,
+    authRepository: AuthRepository
+) {
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
@@ -65,7 +69,7 @@ fun AppNavigation(navController: NavHostController) {
                     navController.navigate("groups_overview_screen")
                 })
             }
-            composable("profile_screen") { ProfileScreen() }
+            composable("profile_screen") { ProfileScreen(authRepository.getUser()) }
         }
     }
 }
