@@ -2,6 +2,7 @@ package com.max.quotial.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.max.quotial.data.model.Group
 import com.max.quotial.data.model.Quote
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.PostRepository
@@ -17,7 +18,7 @@ class SubmissionViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(PostUiState())
     val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
 
-    fun submitPost(quote: Quote) {
+    fun submitPost(quote: Quote, group: Group?) {
         if (quote.content.isBlank() || quote.source.isBlank()) return
 
         viewModelScope.launch {
@@ -27,16 +28,7 @@ class SubmissionViewModel : ViewModel() {
             )
 
             val user = authRepository.getUser()
-            if (user == null) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = "User not logged in"
-                )
-
-                return@launch
-            }
-
-            postRepository.createPost(quote, user).fold(
+            postRepository.createPost(quote, user, group).fold(
                 onSuccess = {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,

@@ -22,10 +22,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.max.quotial.data.model.Group
 import com.max.quotial.data.model.Quote
 import com.max.quotial.data.model.VoteType
 import com.max.quotial.ui.component.PostCard
 import com.max.quotial.ui.component.QuoteInput
+import com.max.quotial.ui.viewmodel.GroupViewModel
 import com.max.quotial.ui.viewmodel.PostViewModel
 import com.max.quotial.ui.viewmodel.SubmissionViewModel
 
@@ -33,15 +35,18 @@ import com.max.quotial.ui.viewmodel.SubmissionViewModel
 @Composable
 fun PostsScreen(
     submissionViewModel: SubmissionViewModel = viewModel(),
-    postViewModel: PostViewModel = viewModel()
+    postViewModel: PostViewModel = viewModel(),
+    groupViewModel: GroupViewModel = viewModel()
 ) {
     val uiState by submissionViewModel.uiState.collectAsState()
     val posts by postViewModel.postsLiveData.observeAsState(initial = emptyList())
     val userVotes by postViewModel.userVotesLiveData.observeAsState(initial = emptyMap())
     val activeVotePostIds by postViewModel.activeVotePostIds.observeAsState(initial = emptySet())
+    val userGroups by groupViewModel.groupsLiveData.observeAsState(initial = emptyList())
 
     var quoteContent by rememberSaveable { mutableStateOf("") }
     var quoteSource by rememberSaveable { mutableStateOf("") }
+    var selectedGroup by rememberSaveable { mutableStateOf<Group?>(null) }
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
@@ -57,13 +62,20 @@ fun PostsScreen(
         QuoteInput(
             quoteContent,
             quoteSource,
+            userGroups,
             onContentChange = { quoteContent = it },
             onSourceChange = { quoteSource = it },
-            onSubmit = { submissionViewModel.submitPost(Quote(quoteContent, quoteSource)) },
+            onGroupSelected = { selectedGroup = it },
+            onSubmit = {
+                submissionViewModel.submitPost(
+                    Quote(quoteContent, quoteSource),
+                    selectedGroup
+                )
+            },
             isLoading = uiState.isLoading
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text("Posts:")
         LazyColumn(
