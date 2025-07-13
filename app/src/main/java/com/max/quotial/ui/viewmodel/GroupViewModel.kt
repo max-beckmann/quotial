@@ -1,9 +1,12 @@
 package com.max.quotial.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.max.quotial.data.model.Group
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.GroupRepository
 import kotlinx.coroutines.flow.SharingStarted
@@ -45,5 +48,9 @@ class GroupViewModel : ViewModel() {
                 Log.e("GroupViewModel", "createGroup", e)
             }
         }
+    }
+
+    fun getGroupById(id: String): LiveData<Group?> = groupsLiveData.map { list ->
+        list.firstOrNull { it.id == id }
     }
 }

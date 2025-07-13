@@ -3,6 +3,7 @@ package com.max.quotial.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.VoteType
 import com.max.quotial.data.repository.AuthRepository
@@ -54,5 +55,9 @@ class PostViewModel : ViewModel() {
                 _activeVotePostIds.value.minus(postId)
             }
         }
+    }
+
+    fun getPostsByGroup(groupId: String) = postsLiveData.map { post ->
+        post.filter { it.groupId == groupId }
     }
 }

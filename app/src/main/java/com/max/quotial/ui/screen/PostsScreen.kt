@@ -2,14 +2,10 @@ package com.max.quotial.ui.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,8 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.max.quotial.data.model.Group
 import com.max.quotial.data.model.Quote
-import com.max.quotial.data.model.VoteType
-import com.max.quotial.ui.component.PostCard
+import com.max.quotial.ui.component.PostList
 import com.max.quotial.ui.component.QuoteInput
 import com.max.quotial.ui.viewmodel.GroupViewModel
 import com.max.quotial.ui.viewmodel.PostViewModel
@@ -78,20 +73,13 @@ fun PostsScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text("Posts:")
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(vertical = 8.dp)
-        ) {
-            items(posts, key = { it.id }) { post ->
-                PostCard(
-                    post,
-                    userVote = userVotes[post.id] ?: VoteType.NONE,
-                    isVoting = activeVotePostIds.contains(post.id),
-                    onVote = { vote ->
-                        postViewModel.vote(post.id, vote)
-                    })
+        PostList(
+            posts,
+            userVotes,
+            activeVotePostIds,
+            onVote = { postId, voteType ->
+                postViewModel.vote(postId, voteType)
             }
-        }
+        )
     }
 }
