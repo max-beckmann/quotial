@@ -25,6 +25,7 @@ import com.max.quotial.ui.viewmodel.GroupViewModel
 @Composable
 fun GroupsOverviewScreen(
     onCreateGroupClick: () -> Unit,
+    onGroupClick: (String) -> Unit,
     groupViewModel: GroupViewModel = viewModel()
 ) {
     val groups by groupViewModel.groupsLiveData.observeAsState(initial = emptyList())
@@ -38,7 +39,11 @@ fun GroupsOverviewScreen(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(groups, key = { it.id }) { group ->
-                    GroupCard(group, isMember = memberships.contains(group.id))
+                    GroupCard(
+                        group,
+                        isMember = memberships.contains(group.id),
+                        onGroupClick
+                    )
                 }
             }
         } else {

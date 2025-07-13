@@ -9,6 +9,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,10 +17,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.ui.screen.GroupCreationScreen
+import com.max.quotial.ui.screen.GroupScreen
 import com.max.quotial.ui.screen.GroupsOverviewScreen
 import com.max.quotial.ui.screen.PostsScreen
 import com.max.quotial.ui.screen.ProfileScreen
@@ -57,18 +61,44 @@ fun AppNavigation(
                 .padding(horizontal = 16.dp)
         ) {
             composable("posts_screen") { PostsScreen() }
+
             composable("groups_overview_screen") {
-                GroupsOverviewScreen(onCreateGroupClick = {
-                    navController.navigate(
-                        "group_creation_screen"
-                    )
-                })
+                GroupsOverviewScreen(
+                    onCreateGroupClick = {
+                        navController.navigate(
+                            "group_creation_screen"
+                        )
+                    },
+                    onGroupClick = { groupId ->
+                        navController.navigate("group_screen/$groupId")
+                    }
+                )
             }
+
+            composable(
+                "group_screen/{groupId}",
+                arguments = listOf(navArgument("groupId") { type = NavType.StringType })
+            ) {
+                val groupId = it.arguments?.getString("groupId")
+
+                if (groupId == null) {
+                    LaunchedEffect(Unit) {
+                        navController.popBackStack()
+                    }
+
+                    return@composable
+                }
+
+                GroupScreen(groupId)
+            }
+
             composable("group_creation_screen") {
                 GroupCreationScreen(onGroupCreated = {
+                    //TODO: navigate to individual group screen
                     navController.navigate("groups_overview_screen")
                 })
             }
+
             composable("profile_screen") { ProfileScreen(authRepository.getUser()) }
         }
     }

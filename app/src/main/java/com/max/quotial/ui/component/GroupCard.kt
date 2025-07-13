@@ -21,9 +21,13 @@ import com.max.quotial.data.model.Group
 @Composable
 fun GroupCard(
     group: Group,
-    isMember: Boolean
+    isMember: Boolean,
+    onGroupClick: (String) -> Unit,
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = { onGroupClick(group.id) },
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
