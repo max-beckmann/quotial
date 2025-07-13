@@ -77,7 +77,31 @@ class GroupRepository {
                 })
         }
 
-    fun leaveGroup(groupId: String, userId: String) {}
+    suspend fun leaveGroup(groupId: String, userId: String): Result<Unit> =
+        suspendCoroutine { continuation ->
+            database.getReference("groups").child(groupId).child("memberCount")
+                .runTransaction(object : Transaction.Handler {
+                    override fun doTransaction(currentData: MutableData): Transaction.Result {
+                        val currentCount = currentData.getValue(Int::class.java) ?: 0
+                        currentData.value = currentCount - 1
+                        return Transaction.success(currentData)
+                    }
+
+                    override fun onComplete(
+                        error: DatabaseError?,
+                        committed: Boolean,
+                        currentData: DataSnapshot?
+                    ) {
+                        if (committed) {
+                            database.getReference("groupMembers").child(groupId).child(userId)
+                                .removeValue()
+
+                            database.getReference("userGroups").child(userId).child(groupId)
+                                .removeValue()
+                        }
+                    }
+                })
+        }
 
     fun getAllGroups(): Flow<List<Group>> = callbackFlow {
         val listener = object : ValueEventListener {

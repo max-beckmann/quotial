@@ -23,6 +23,7 @@ fun GroupCard(
     group: Group,
     isMember: Boolean,
     onGroupClick: (String) -> Unit,
+    onGroupJoin: (String) -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -43,7 +44,7 @@ fun GroupCard(
             if (isMember) {
                 Icon(Icons.Default.Check, contentDescription = "joined")
             } else {
-                Button(onClick = {}) {
+                Button(onClick = { onGroupJoin(group.id) }) {
                     Text("join")
                 }
             }

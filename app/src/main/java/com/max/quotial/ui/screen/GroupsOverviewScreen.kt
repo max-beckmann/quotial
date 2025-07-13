@@ -42,7 +42,8 @@ fun GroupsOverviewScreen(
                     GroupCard(
                         group,
                         isMember = memberships.contains(group.id),
-                        onGroupClick
+                        onGroupClick,
+                        onGroupJoin = { groupId -> groupViewModel.join(groupId) }
                     )
                 }
             }

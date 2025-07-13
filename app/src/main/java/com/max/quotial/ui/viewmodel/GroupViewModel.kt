@@ -50,6 +50,30 @@ class GroupViewModel : ViewModel() {
         }
     }
 
+    fun join(groupId: String) {
+        viewModelScope.launch {
+            try {
+                val userId = authRepository.getUserId()
+
+                groupRepository.joinGroup(groupId, userId)
+            } catch (e: Exception) {
+                Log.e("GroupViewModel", "createGroup", e)
+            }
+        }
+    }
+
+    fun leave(groupId: String) {
+        viewModelScope.launch {
+            try {
+                val userId = authRepository.getUserId()
+
+                groupRepository.leaveGroup(groupId, userId)
+            } catch (e: Exception) {
+                Log.e("GroupViewModel", "createGroup", e)
+            }
+        }
+    }
+
     fun getGroupById(id: String): LiveData<Group?> = groupsLiveData.map { list ->
         list.firstOrNull { it.id == id }
     }
