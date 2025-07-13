@@ -20,6 +20,7 @@ fun PostList(
     userVotes: Map<String, VoteType>,
     activeVotePostIds: Set<String>,
     onVote: (String, VoteType) -> Unit,
+    onGroupClick: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -31,7 +32,9 @@ fun PostList(
                 post,
                 userVote = userVotes[post.id] ?: VoteType.NONE,
                 isVoting = activeVotePostIds.contains(post.id),
-                onVote = { vote -> onVote(post.id, vote) })
+                onVote = { vote -> onVote(post.id, vote) },
+                onGroupClick,
+            )
         }
     }
 }

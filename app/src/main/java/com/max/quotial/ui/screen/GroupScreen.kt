@@ -20,6 +20,7 @@ import com.max.quotial.ui.viewmodel.PostViewModel
 @Composable
 fun GroupScreen(
     groupId: String,
+    onGroupClick: (String) -> Unit,
     groupViewModel: GroupViewModel = viewModel(),
     postViewModel: PostViewModel = viewModel()
 ) {
@@ -53,7 +54,8 @@ fun GroupScreen(
                 activeVotePostIds,
                 onVote = { postId, voteType ->
                     postViewModel.vote(postId, voteType)
-                }
+                },
+                onGroupClick,
             )
         }
     }

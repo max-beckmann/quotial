@@ -2,6 +2,7 @@ package com.max.quotial.ui.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ fun PostCard(
     userVote: VoteType,
     isVoting: Boolean,
     onVote: (VoteType) -> Unit,
+    onGroupClick: (String) -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth()
@@ -58,7 +60,12 @@ fun PostCard(
             Text(
                 text = "in ${post.groupName ?: "General"}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.outline,
+                modifier = Modifier.clickable(
+                    enabled = post.groupId != null
+                ) {
+                    onGroupClick(post.groupId!!)
+                }
             )
 
             Spacer(modifier = Modifier.height(8.dp))

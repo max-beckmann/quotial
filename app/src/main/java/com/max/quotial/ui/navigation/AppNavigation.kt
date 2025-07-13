@@ -60,7 +60,9 @@ fun AppNavigation(
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            composable("posts_screen") { PostsScreen() }
+            composable("posts_screen") {
+                PostsScreen(onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") })
+            }
 
             composable("groups_overview_screen") {
                 GroupsOverviewScreen(
@@ -69,9 +71,7 @@ fun AppNavigation(
                             "group_creation_screen"
                         )
                     },
-                    onGroupClick = { groupId ->
-                        navController.navigate("group_screen/$groupId")
-                    }
+                    onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") }
                 )
             }
 
@@ -89,7 +89,9 @@ fun AppNavigation(
                     return@composable
                 }
 
-                GroupScreen(groupId)
+                GroupScreen(
+                    groupId,
+                    onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") })
             }
 
             composable("group_creation_screen") {
