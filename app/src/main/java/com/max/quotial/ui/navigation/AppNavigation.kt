@@ -59,7 +59,7 @@ fun AppNavigation(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
-                            text = "quotial",
+                            text = getTitleForRoute(currentRoute),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Light
                         )
@@ -172,4 +172,12 @@ fun AppNavigation(
             composable("profile_screen") { ProfileScreen(authRepository.getUser()) }
         }
     }
+}
+
+fun getTitleForRoute(route: String?): String = when {
+    route == "submission_screen" -> "Post a quote"
+    route == "groups_overview_screen" -> "Groups"
+    route == "group_creation_screen" -> "Create your own group"
+    route == "profile_screen" -> "Profile"
+    else -> "quotial"
 }
