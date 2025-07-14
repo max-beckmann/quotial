@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +32,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.ui.screen.GroupCreationScreen
@@ -48,6 +50,8 @@ fun AppNavigation(
     authRepository: AuthRepository
 ) {
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
         topBar = {
@@ -59,6 +63,18 @@ fun AppNavigation(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Light
                         )
+                    },
+                    navigationIcon = {
+                        if (currentRoute != null && currentRoute !in bottomNavigationItems.map { it.route }) {
+                            IconButton(onClick = {
+                                navController.popBackStack()
+                            }) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "back"
+                                )
+                            }
+                        }
                     },
                     actions = {
                         IconButton(onClick = {
