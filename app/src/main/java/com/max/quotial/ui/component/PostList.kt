@@ -3,7 +3,6 @@ package com.max.quotial.ui.component
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,8 +23,7 @@ fun PostList(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(posts, key = { it.id }) { post ->
             PostCard(

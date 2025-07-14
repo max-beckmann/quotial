@@ -69,7 +69,7 @@ fun AppNavigation(
                         }
                     }
                 )
-                
+
                 HorizontalDivider(
                     thickness = 1.dp,
                     color = Color.LightGray
@@ -106,7 +106,7 @@ fun AppNavigation(
             startDestination = "posts_screen",
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             composable("posts_screen") {
                 PostsScreen(onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") })
