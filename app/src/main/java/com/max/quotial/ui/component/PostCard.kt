@@ -1,6 +1,7 @@
 package com.max.quotial.ui.component
 
 import android.os.Build
+import android.text.format.DateUtils
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -26,7 +27,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.max.quotial.data.model.Post
 import com.max.quotial.data.model.VoteType
-import com.max.quotial.util.toDateTimeString
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -58,7 +58,7 @@ fun PostCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = post.timestamp.toDateTimeString(),
+                    text = getRelativeTime(post.timestamp),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -99,4 +99,12 @@ fun PostCard(
             )
         }
     }
+}
+
+fun getRelativeTime(timestamp: Long): String {
+    return DateUtils.getRelativeTimeSpanString(
+        timestamp,
+        System.currentTimeMillis(),
+        DateUtils.MINUTE_IN_MILLIS
+    ).toString()
 }

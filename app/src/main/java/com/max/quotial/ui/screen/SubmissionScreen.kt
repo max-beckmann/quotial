@@ -28,9 +28,7 @@ fun SubmissionScreen(
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            quoteContent = ""
-            quoteSource = ""
-            submissionViewModel.clear()
+            onSubmit()
         }
     }
 
@@ -43,7 +41,6 @@ fun SubmissionScreen(
         onGroupSelected = { submissionViewModel.selectGroup(it) },
         onSubmit = {
             submissionViewModel.submitPost(Quote(quoteContent, quoteSource))
-            onSubmit()
         },
         isLoading = uiState.isLoading
     )
