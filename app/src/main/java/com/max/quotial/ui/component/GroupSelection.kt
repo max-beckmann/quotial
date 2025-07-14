@@ -41,7 +41,7 @@ fun GroupSelection(
                 .clickable { expanded = true }
                 .border(
                     width = 1.dp,
-                    color = Color.DarkGray,
+                    color = Color.LightGray,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .padding(16.dp),

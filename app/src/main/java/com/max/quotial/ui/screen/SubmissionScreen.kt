@@ -16,6 +16,7 @@ import com.max.quotial.ui.viewmodel.SubmissionViewModel
 
 @Composable
 fun SubmissionScreen(
+    onSubmit: () -> Unit,
     submissionViewModel: SubmissionViewModel = viewModel(),
     groupViewModel: GroupViewModel = viewModel(),
 ) {
@@ -42,6 +43,7 @@ fun SubmissionScreen(
         onGroupSelected = { submissionViewModel.selectGroup(it) },
         onSubmit = {
             submissionViewModel.submitPost(Quote(quoteContent, quoteSource))
+            onSubmit()
         },
         isLoading = uiState.isLoading
     )

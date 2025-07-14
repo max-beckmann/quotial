@@ -113,7 +113,7 @@ fun AppNavigation(
             }
 
             composable("submission_screen") {
-                SubmissionScreen()
+                SubmissionScreen(onSubmit = { navController.navigate("posts_screen") })
             }
 
             composable("groups_overview_screen") {
