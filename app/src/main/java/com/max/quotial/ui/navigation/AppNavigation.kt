@@ -2,8 +2,15 @@ package com.max.quotial.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -15,7 +22,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -28,6 +38,7 @@ import com.max.quotial.ui.screen.GroupsOverviewScreen
 import com.max.quotial.ui.screen.PostsScreen
 import com.max.quotial.ui.screen.ProfileScreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(
@@ -37,6 +48,28 @@ fun AppNavigation(
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
+        topBar = {
+            Column {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = "quotial",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Light
+                        )
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Person, contentDescription = "Profile")
+                        }
+                    }
+                )
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.LightGray
+                )
+            }
+        },
         bottomBar = {
             NavigationBar {
                 bottomNavigationItems.forEachIndexed { index, item ->
