@@ -2,8 +2,9 @@ package com.max.quotial.ui.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.max.quotial.ui.component.PostList
@@ -35,19 +38,32 @@ fun GroupScreen(
     if (group == null) {
         Text("no group with ID $groupId could be found")
     } else {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        Column {
             Text(
                 text = group!!.name,
                 style = MaterialTheme.typography.titleLarge
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = buildAnnotatedString {
+                    append(group!!.memberCount.toString())
+                    append(if (group!!.memberCount == 1) " member" else " members")
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = group!!.description,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
                 if (isMember) {
@@ -58,6 +74,8 @@ fun GroupScreen(
             }) {
                 if (isMember) Text("leave") else Text("join")
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             HorizontalDivider()
 

@@ -1,5 +1,8 @@
 package com.max.quotial.ui.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.Group
@@ -18,7 +21,13 @@ class SubmissionViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(PostUiState())
     val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
 
-    fun submitPost(quote: Quote, group: Group?) {
+    private var selectedGroup by mutableStateOf<Group?>(null)
+
+    fun selectGroup(group: Group?) {
+        selectedGroup = group
+    }
+
+    fun submitPost(quote: Quote) {
         if (quote.content.isBlank() || quote.source.isBlank()) return
 
         viewModelScope.launch {
@@ -28,7 +37,7 @@ class SubmissionViewModel : ViewModel() {
             )
 
             val user = authRepository.getUser()
-            postRepository.createPost(quote, user, group).fold(
+            postRepository.createPost(quote, user, selectedGroup).fold(
                 onSuccess = {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
