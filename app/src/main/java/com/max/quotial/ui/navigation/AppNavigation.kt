@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -37,6 +38,7 @@ import com.max.quotial.ui.screen.GroupScreen
 import com.max.quotial.ui.screen.GroupsOverviewScreen
 import com.max.quotial.ui.screen.PostsScreen
 import com.max.quotial.ui.screen.ProfileScreen
+import com.max.quotial.ui.screen.SubmissionScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -59,11 +61,15 @@ fun AppNavigation(
                         )
                     },
                     actions = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            navController.navigate("profile_screen")
+                            selectedIndex = 1000
+                        }) {
                             Icon(Icons.Default.Person, contentDescription = "Profile")
                         }
                     }
                 )
+                
                 HorizontalDivider(
                     thickness = 1.dp,
                     color = Color.LightGray
@@ -71,17 +77,26 @@ fun AppNavigation(
             }
         },
         bottomBar = {
-            NavigationBar {
-                bottomNavigationItems.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = selectedIndex == index,
-                        onClick = {
-                            navController.navigate(item.route)
-                            selectedIndex = index
-                        },
-                        icon = { Icon(item.icon, contentDescription = item.label) },
-                        label = { Text(item.label) }
-                    )
+            Column {
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.LightGray
+                )
+
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.background
+                ) {
+                    bottomNavigationItems.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            selected = selectedIndex == index,
+                            onClick = {
+                                navController.navigate(item.route)
+                                selectedIndex = index
+                            },
+                            icon = { Icon(item.icon, contentDescription = item.label) },
+                            label = { Text(item.label) }
+                        )
+                    }
                 }
             }
         }
@@ -95,6 +110,10 @@ fun AppNavigation(
         ) {
             composable("posts_screen") {
                 PostsScreen(onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") })
+            }
+
+            composable("submission_screen") {
+                SubmissionScreen()
             }
 
             composable("groups_overview_screen") {
