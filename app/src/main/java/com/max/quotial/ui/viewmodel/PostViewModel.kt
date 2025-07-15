@@ -60,4 +60,14 @@ class PostViewModel : ViewModel() {
     fun getPostsByGroup(groupId: String) = postsLiveData.map { post ->
         post.filter { it.groupId == groupId }
     }
+
+    fun deletePost(id: String) {
+        viewModelScope.launch {
+            try {
+                postRepository.deletePost(id)
+            } catch (e: Exception) {
+                Log.e("PostViewModel", "deletePosts", e)
+            }
+        }
+    }
 }

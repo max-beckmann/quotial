@@ -20,6 +20,7 @@ fun PostList(
     activeVotePostIds: Set<String>,
     onVote: (String, VoteType) -> Unit,
     onGroupClick: (String) -> Unit,
+    onDelete: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -32,6 +33,7 @@ fun PostList(
                 isVoting = activeVotePostIds.contains(post.id),
                 onVote = { vote -> onVote(post.id, vote) },
                 onGroupClick,
+                onDelete
             )
         }
     }

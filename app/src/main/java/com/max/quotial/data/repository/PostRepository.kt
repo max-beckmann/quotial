@@ -72,4 +72,14 @@ class PostRepository {
                     continuation.resume(Result.failure(exception))
                 }
         }
+
+    suspend fun deletePost(id: String): Result<Unit> = suspendCoroutine { continuation ->
+        postsRef.child(id).removeValue()
+            .addOnSuccessListener {
+                continuation.resume(Result.success(Unit))
+            }
+            .addOnFailureListener { exception ->
+                continuation.resume(Result.failure(exception))
+            }
+    }
 }

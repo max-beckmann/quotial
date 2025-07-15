@@ -87,6 +87,9 @@ fun GroupScreen(
                     postViewModel.vote(postId, voteType)
                 },
                 onGroupClick,
+                onDelete = { id ->
+                    postViewModel.deletePost(id)
+                }
             )
         }
     }

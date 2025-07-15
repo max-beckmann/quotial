@@ -27,6 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.max.quotial.data.model.Post
 import com.max.quotial.data.model.VoteType
+import com.max.quotial.data.repository.AuthRepository
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -36,7 +37,10 @@ fun PostCard(
     isVoting: Boolean,
     onVote: (VoteType) -> Unit,
     onGroupClick: (String) -> Unit,
+    onDelete: (String) -> Unit
 ) {
+    val authRepository = AuthRepository()
+
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -91,12 +95,26 @@ fun PostCard(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            VoteSection(
-                post,
-                userVote,
-                isVoting,
-                onVote,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                VoteSection(
+                    post,
+                    userVote,
+                    isVoting,
+                    onVote,
+                )
+
+                if (post.userId == authRepository.getUserId()) {
+                    Text(
+                        text = "delete",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.clickable { onDelete(post.id) }
+                    )
+                }
+            }
         }
     }
 }
