@@ -47,7 +47,7 @@ import com.max.quotial.ui.screen.SubmissionScreen
 @Composable
 fun AppNavigation(
     navController: NavHostController,
-    authRepository: AuthRepository
+    authRepository: AuthRepository,
 ) {
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()

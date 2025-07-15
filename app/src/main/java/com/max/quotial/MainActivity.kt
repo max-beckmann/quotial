@@ -1,5 +1,6 @@
 package com.max.quotial
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,10 +8,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.ui.navigation.AppNavigation
 import com.max.quotial.ui.theme.QuotialTheme
+import com.max.quotial.ui.viewmodel.ThemeViewModel
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : ComponentActivity() {
     private val authRepository = AuthRepository()
@@ -27,8 +37,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val themeViewModel: ThemeViewModel = viewModel()
+            val darkTheme by themeViewModel.darkModeFlow.collectAsState(initial = false)
 
-            QuotialTheme {
+            QuotialTheme(darkTheme) {
                 AppNavigation(navController, authRepository)
             }
         }
