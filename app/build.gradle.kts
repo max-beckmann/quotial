@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
