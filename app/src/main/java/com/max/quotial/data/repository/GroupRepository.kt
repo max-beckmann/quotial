@@ -21,27 +21,42 @@ class GroupRepository {
 
     suspend fun createGroup(name: String, creatorId: String, description: String?): Result<Group> =
         suspendCoroutine { continuation ->
-            val id = database.getReference("groups").push().key ?: run {
-                continuation.resume(Result.failure(Exception("Error while creating group ID")))
-                return@suspendCoroutine
-            }
+            val query = database.getReference("groups").orderByChild("name").equalTo(name)
 
-            val group = Group(
-                id,
-                name,
-                description = description ?: "",
-                createdBy = creatorId,
-                createdAt = System.currentTimeMillis(),
-                memberCount = 0,
-            )
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        continuation.resume(Result.failure(Exception("Error while creating group: name is already taken")))
+                        return
+                    }
 
-            database.getReference("groups").child(id).setValue(group)
-                .addOnSuccessListener {
-                    continuation.resume(Result.success(group))
+                    val id = database.getReference("groups").push().key ?: run {
+                        continuation.resume(Result.failure(Exception("Error while creating group ID")))
+                        return
+                    }
+
+                    val group = Group(
+                        id,
+                        name,
+                        description = description ?: "",
+                        createdBy = creatorId,
+                        createdAt = System.currentTimeMillis(),
+                        memberCount = 0,
+                    )
+
+                    database.getReference("groups").child(id).setValue(group)
+                        .addOnSuccessListener {
+                            continuation.resume(Result.success(group))
+                        }
+                        .addOnFailureListener { exception ->
+                            continuation.resume(Result.failure(exception))
+                        }
                 }
-                .addOnFailureListener { exception ->
-                    continuation.resume(Result.failure(exception))
+
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resume(Result.failure(Exception(error.message)))
                 }
+            })
         }
 
     suspend fun joinGroup(groupId: String, userId: String): Result<Unit> =
