@@ -131,7 +131,7 @@ fun AppNavigation(
             }
 
             composable("post_form_screen") {
-                PostFormScreen(onSubmit = { navController.navigate("posts_screen") })
+                PostFormScreen(onSubmit = { navController.navigate("main_feed_screen") })
             }
 
             composable("group_overview_screen") {

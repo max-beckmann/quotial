@@ -13,7 +13,7 @@ data class BottomNavigationItem(
 )
 
 val bottomNavigationItems = listOf(
-    BottomNavigationItem("posts_screen", "Home", Icons.Default.Home),
-    BottomNavigationItem("submission_screen", "Post", Icons.Default.AddCircle),
-    BottomNavigationItem("groups_overview_screen", "Groups", Icons.Default.Menu),
+    BottomNavigationItem("main_feed_screen", "Home", Icons.Default.Home),
+    BottomNavigationItem("post_form_screen", "Post", Icons.Default.AddCircle),
+    BottomNavigationItem("group_overview_screen", "Groups", Icons.Default.Menu),
 )
