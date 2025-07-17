@@ -22,7 +22,7 @@ import com.max.quotial.ui.viewmodel.PostViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun GroupScreen(
+fun GroupFeedScreen(
     groupId: String,
     onGroupClick: (String) -> Unit,
     groupViewModel: GroupViewModel = hiltViewModel(),

@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.max.quotial.ui.viewmodel.GroupViewModel
 
 @Composable
-fun GroupCreationScreen(
+fun GroupFormScreen(
     onGroupCreated: () -> Unit,
     groupViewModel: GroupViewModel = hiltViewModel()
 ) {

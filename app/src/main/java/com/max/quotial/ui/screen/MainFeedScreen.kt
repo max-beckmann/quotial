@@ -30,7 +30,7 @@ import com.max.quotial.ui.viewmodel.QuoteViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PostsScreen(
+fun MainFeedScreen(
     onGroupClick: (String) -> Unit,
     postViewModel: PostViewModel = hiltViewModel(),
     quoteViewModel: QuoteViewModel = hiltViewModel(),

@@ -36,12 +36,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseUser
 import com.max.quotial.data.repository.PostRepository
-import com.max.quotial.ui.screen.GroupCreationScreen
-import com.max.quotial.ui.screen.GroupScreen
-import com.max.quotial.ui.screen.GroupsOverviewScreen
-import com.max.quotial.ui.screen.PostsScreen
+import com.max.quotial.ui.screen.GroupFeedScreen
+import com.max.quotial.ui.screen.GroupFormScreen
+import com.max.quotial.ui.screen.GroupOverviewScreen
+import com.max.quotial.ui.screen.MainFeedScreen
+import com.max.quotial.ui.screen.PostFormScreen
 import com.max.quotial.ui.screen.ProfileScreen
-import com.max.quotial.ui.screen.SubmissionScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -121,32 +121,32 @@ fun AppNavigation(
     ) { innerPadding ->
         NavHost(
             navController,
-            startDestination = "posts_screen",
+            startDestination = "main_feed_screen",
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
-            composable("posts_screen") {
-                PostsScreen(onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") })
+            composable("main_feed_screen") {
+                MainFeedScreen(onGroupClick = { groupId -> navController.navigate("group_feed_screen/$groupId") })
             }
 
-            composable("submission_screen") {
-                SubmissionScreen(onSubmit = { navController.navigate("posts_screen") })
+            composable("post_form_screen") {
+                PostFormScreen(onSubmit = { navController.navigate("posts_screen") })
             }
 
-            composable("groups_overview_screen") {
-                GroupsOverviewScreen(
+            composable("group_overview_screen") {
+                GroupOverviewScreen(
                     onCreateGroupClick = {
                         navController.navigate(
-                            "group_creation_screen"
+                            "group_form_screen"
                         )
                     },
-                    onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") }
+                    onGroupClick = { groupId -> navController.navigate("group_feed_screen/$groupId") }
                 )
             }
 
             composable(
-                "group_screen/{groupId}",
+                "group_feed_screen/{groupId}",
                 arguments = listOf(navArgument("groupId") { type = NavType.StringType })
             ) {
                 val groupId = it.arguments?.getString("groupId")
@@ -159,15 +159,15 @@ fun AppNavigation(
                     return@composable
                 }
 
-                GroupScreen(
+                GroupFeedScreen(
                     groupId,
-                    onGroupClick = { groupId -> navController.navigate("group_screen/$groupId") })
+                    onGroupClick = { groupId -> navController.navigate("group_feed_screen/$groupId") })
             }
 
-            composable("group_creation_screen") {
-                GroupCreationScreen(onGroupCreated = {
+            composable("group_form_screen") {
+                GroupFormScreen(onGroupCreated = {
                     //TODO: navigate to individual group screen
-                    navController.navigate("groups_overview_screen")
+                    navController.navigate("group_overview_screen")
                 })
             }
 
@@ -184,9 +184,9 @@ fun AppNavigation(
 }
 
 fun getTitleForRoute(route: String?): String = when {
-    route == "submission_screen" -> "Post a quote"
-    route == "groups_overview_screen" -> "Groups"
-    route == "group_creation_screen" -> "Create your own group"
+    route == "post_form_screen" -> "Post a quote"
+    route == "group_overview_screen" -> "Groups"
+    route == "group_form_screen" -> "Create a new group"
     route == "profile_screen" -> "Profile"
     else -> "quotial"
 }

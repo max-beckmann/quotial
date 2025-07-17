@@ -15,7 +15,7 @@ import com.max.quotial.ui.viewmodel.GroupViewModel
 import com.max.quotial.ui.viewmodel.SubmissionViewModel
 
 @Composable
-fun SubmissionScreen(
+fun PostFormScreen(
     onSubmit: () -> Unit,
     submissionViewModel: SubmissionViewModel = hiltViewModel(),
     groupViewModel: GroupViewModel = hiltViewModel(),

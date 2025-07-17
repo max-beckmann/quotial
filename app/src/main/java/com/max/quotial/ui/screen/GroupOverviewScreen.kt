@@ -26,7 +26,7 @@ import com.max.quotial.ui.component.GroupCard
 import com.max.quotial.ui.viewmodel.GroupViewModel
 
 @Composable
-fun GroupsOverviewScreen(
+fun GroupOverviewScreen(
     onCreateGroupClick: () -> Unit,
     onGroupClick: (String) -> Unit,
     groupViewModel: GroupViewModel = hiltViewModel()
