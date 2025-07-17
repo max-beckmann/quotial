@@ -26,6 +26,7 @@ import com.max.quotial.ui.viewmodel.ThemeViewModel
 @Composable
 fun ProfileScreen(
     user: FirebaseUser,
+    onSignOut: () -> Unit,
     themeViewModel: ThemeViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -51,6 +52,7 @@ fun ProfileScreen(
         }
 
         Button(onClick = {
+            onSignOut()
             Firebase.auth.signOut()
 
             val intent = Intent(context, AuthActivity::class.java)

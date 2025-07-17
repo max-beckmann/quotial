@@ -16,6 +16,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.max.quotial.data.repository.AuthRepository
+import com.max.quotial.data.repository.PostRepository
 import com.max.quotial.ui.navigation.AppNavigation
 import com.max.quotial.ui.theme.QuotialTheme
 import com.max.quotial.ui.viewmodel.ThemeViewModel
@@ -24,6 +25,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 class MainActivity : ComponentActivity() {
     private val authRepository = AuthRepository()
+    private val postRepository = PostRepository()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +43,7 @@ class MainActivity : ComponentActivity() {
             val darkTheme by themeViewModel.darkModeFlow.collectAsState(initial = false)
 
             QuotialTheme(darkTheme) {
-                AppNavigation(navController, authRepository)
+                AppNavigation(navController, authRepository, postRepository)
             }
         }
     }

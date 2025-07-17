@@ -23,7 +23,7 @@ class AuthActivity : AppCompatActivity() {
 
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
-            .setTheme(R.style.Theme_Quotial)
+            .setTheme(R.style.Theme_Quotial_Auth)
             .setAvailableProviders(providers)
             .build()
 

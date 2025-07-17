@@ -4,4 +4,6 @@
     <style name="Theme.Quotial" parent="android:Theme.Material.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.Quotial.Auth" parent="@style/Theme.AppCompat.NoActionBar" />
 </resources>

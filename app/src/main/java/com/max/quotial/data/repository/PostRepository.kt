@@ -20,8 +20,10 @@ class PostRepository {
     private val database = Firebase.database
     private val postsRef = database.getReference("posts")
 
+    private var postListener: ValueEventListener? = null
+
     fun getPosts(): Flow<List<Post>> = callbackFlow {
-        val listener = object : ValueEventListener {
+        postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val posts = mutableListOf<Post>()
                 for (childSnapshot in dataSnapshot.children) {
@@ -43,8 +45,8 @@ class PostRepository {
             }
         }
 
-        postsRef.addValueEventListener(listener)
-        awaitClose { postsRef.removeEventListener(listener) }
+        postsRef.addValueEventListener(postListener!!)
+        awaitClose { postsRef.removeEventListener(postListener!!) }
     }
 
     suspend fun createPost(quote: Quote, user: FirebaseUser, group: Group?): Result<Post> =
@@ -81,5 +83,10 @@ class PostRepository {
             .addOnFailureListener { exception ->
                 continuation.resume(Result.failure(exception))
             }
+    }
+
+    fun stopListening() {
+        postListener?.let { postsRef.removeEventListener(it) }
+        postListener = null
     }
 }
