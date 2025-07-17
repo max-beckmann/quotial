@@ -8,7 +8,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.max.quotial.data.model.Quote
 import com.max.quotial.ui.component.QuoteInput
 import com.max.quotial.ui.viewmodel.GroupViewModel
@@ -17,8 +17,8 @@ import com.max.quotial.ui.viewmodel.SubmissionViewModel
 @Composable
 fun SubmissionScreen(
     onSubmit: () -> Unit,
-    submissionViewModel: SubmissionViewModel = viewModel(),
-    groupViewModel: GroupViewModel = viewModel(),
+    submissionViewModel: SubmissionViewModel = hiltViewModel(),
+    groupViewModel: GroupViewModel = hiltViewModel(),
 ) {
     val uiState by submissionViewModel.uiState.collectAsState()
     val userGroups by groupViewModel.groupsLiveData.observeAsState(initial = emptyList())

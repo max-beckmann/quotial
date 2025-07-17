@@ -15,7 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.max.quotial.ui.component.PostList
 import com.max.quotial.ui.viewmodel.GroupViewModel
 import com.max.quotial.ui.viewmodel.PostViewModel
@@ -25,8 +25,8 @@ import com.max.quotial.ui.viewmodel.PostViewModel
 fun GroupScreen(
     groupId: String,
     onGroupClick: (String) -> Unit,
-    groupViewModel: GroupViewModel = viewModel(),
-    postViewModel: PostViewModel = viewModel()
+    groupViewModel: GroupViewModel = hiltViewModel(),
+    postViewModel: PostViewModel = hiltViewModel()
 ) {
     val group by groupViewModel.getGroupById(groupId).observeAsState()
     val memberships by groupViewModel.membershipsLiveData.observeAsState(initial = emptyList())

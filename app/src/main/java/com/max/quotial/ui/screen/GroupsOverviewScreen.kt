@@ -21,7 +21,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.max.quotial.ui.component.GroupCard
 import com.max.quotial.ui.viewmodel.GroupViewModel
 
@@ -29,7 +29,7 @@ import com.max.quotial.ui.viewmodel.GroupViewModel
 fun GroupsOverviewScreen(
     onCreateGroupClick: () -> Unit,
     onGroupClick: (String) -> Unit,
-    groupViewModel: GroupViewModel = viewModel()
+    groupViewModel: GroupViewModel = hiltViewModel()
 ) {
     val groups by groupViewModel.groupsLiveData.observeAsState(initial = emptyList())
     val memberships by groupViewModel.membershipsLiveData.observeAsState(initial = emptyList())

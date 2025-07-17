@@ -15,13 +15,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.max.quotial.ui.viewmodel.GroupViewModel
 
 @Composable
 fun GroupCreationScreen(
     onGroupCreated: () -> Unit,
-    groupViewModel: GroupViewModel = viewModel()
+    groupViewModel: GroupViewModel = hiltViewModel()
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }

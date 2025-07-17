@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.network.QuoteOfTheDay
 import com.max.quotial.network.QuoteService
-import com.max.quotial.network.RetrofitHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class QuoteViewModel : ViewModel() {
-    val quoteService = RetrofitHelper.retrofit.create(QuoteService::class.java)
+@HiltViewModel
+class QuoteViewModel @Inject constructor(
+    private val quoteService: QuoteService
+) : ViewModel() {
 
     var quoteOfTheDay by mutableStateOf<QuoteOfTheDay?>(null)
         private set

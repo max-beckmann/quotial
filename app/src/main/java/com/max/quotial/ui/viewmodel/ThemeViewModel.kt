@@ -1,14 +1,17 @@
 package com.max.quotial.ui.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.datastore.ThemeDatastore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ThemeViewModel(application: Application) : AndroidViewModel(application) {
-    private val themeDatastore = ThemeDatastore(application)
+@HiltViewModel
+class ThemeViewModel @Inject constructor(
+    private val themeDatastore: ThemeDatastore
+) : ViewModel() {
     val darkModeFlow: Flow<Boolean> = themeDatastore.loadTheme()
 
     fun setDarkMode(isDarkMode: Boolean) {

@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import com.max.quotial.dataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class ThemeDatastore(private val context: Context) {
+class ThemeDatastore @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
     private val dataStore = context.dataStore
     private val darkModeKey = booleanPreferencesKey("dark_mode")
 

@@ -9,14 +9,17 @@ import androidx.lifecycle.viewModelScope
 import com.max.quotial.data.model.Group
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.GroupRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GroupViewModel : ViewModel() {
-    private val groupRepository = GroupRepository()
-    private val authRepository = AuthRepository()
-
+@HiltViewModel
+class GroupViewModel @Inject constructor(
+    private val groupRepository: GroupRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val groups = groupRepository.getAllGroups()
         .stateIn(
             scope = viewModelScope,

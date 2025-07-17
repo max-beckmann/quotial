@@ -23,7 +23,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.max.quotial.ui.component.PostList
 import com.max.quotial.ui.viewmodel.PostViewModel
 import com.max.quotial.ui.viewmodel.QuoteViewModel
@@ -32,8 +32,8 @@ import com.max.quotial.ui.viewmodel.QuoteViewModel
 @Composable
 fun PostsScreen(
     onGroupClick: (String) -> Unit,
-    postViewModel: PostViewModel = viewModel(),
-    quoteViewModel: QuoteViewModel = viewModel(),
+    postViewModel: PostViewModel = hiltViewModel(),
+    quoteViewModel: QuoteViewModel = hiltViewModel(),
 ) {
     val posts by postViewModel.postsLiveData.observeAsState(initial = emptyList())
     val userVotes by postViewModel.userVotesLiveData.observeAsState(initial = emptyMap())

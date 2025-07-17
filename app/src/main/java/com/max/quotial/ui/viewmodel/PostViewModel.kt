@@ -9,18 +9,19 @@ import com.max.quotial.data.model.VoteType
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.PostRepository
 import com.max.quotial.data.repository.VoteRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PostViewModel : ViewModel() {
-    //TODO: replace by dependency injection
-    private val postRepository = PostRepository()
-    private val voteRepository = VoteRepository()
-    private val authRepository = AuthRepository()
-
-
+@HiltViewModel
+class PostViewModel @Inject constructor(
+    private val postRepository: PostRepository,
+    private val voteRepository: VoteRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val posts = postRepository.getPosts()
         .stateIn(
             scope = viewModelScope,

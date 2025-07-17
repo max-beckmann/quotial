@@ -13,10 +13,13 @@ import com.max.quotial.data.model.Quote
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class PostRepository {
+@Singleton
+class PostRepository @Inject constructor() {
     private val database = Firebase.database
     private val postsRef = database.getReference("posts")
 

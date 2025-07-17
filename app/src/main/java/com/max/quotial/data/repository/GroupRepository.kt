@@ -13,10 +13,13 @@ import com.max.quotial.data.model.GroupMember
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GroupRepository {
+@Singleton
+class GroupRepository @Inject constructor() {
     private val database = Firebase.database
 
     suspend fun createGroup(name: String, creatorId: String, description: String?): Result<Group> =

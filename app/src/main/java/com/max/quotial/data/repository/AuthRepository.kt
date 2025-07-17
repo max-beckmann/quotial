@@ -2,8 +2,11 @@ package com.max.quotial.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthRepository {
+@Singleton()
+class AuthRepository @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
 
     fun getUser(): FirebaseUser {

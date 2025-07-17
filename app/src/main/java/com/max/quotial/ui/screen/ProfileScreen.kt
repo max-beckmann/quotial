@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -27,7 +27,7 @@ import com.max.quotial.ui.viewmodel.ThemeViewModel
 fun ProfileScreen(
     user: FirebaseUser,
     onSignOut: () -> Unit,
-    themeViewModel: ThemeViewModel = viewModel()
+    themeViewModel: ThemeViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val isDarkModeEnabled by themeViewModel.darkModeFlow.collectAsState(initial = false)

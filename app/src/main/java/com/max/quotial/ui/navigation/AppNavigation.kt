@@ -34,7 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
-import com.max.quotial.data.repository.AuthRepository
+import com.google.firebase.auth.FirebaseUser
 import com.max.quotial.data.repository.PostRepository
 import com.max.quotial.ui.screen.GroupCreationScreen
 import com.max.quotial.ui.screen.GroupScreen
@@ -48,7 +48,7 @@ import com.max.quotial.ui.screen.SubmissionScreen
 @Composable
 fun AppNavigation(
     navController: NavHostController,
-    authRepository: AuthRepository,
+    user: FirebaseUser,
     postRepository: PostRepository,
 ) {
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -173,7 +173,7 @@ fun AppNavigation(
 
             composable("profile_screen") {
                 ProfileScreen(
-                    user = authRepository.getUser(),
+                    user,
                     onSignOut = {
                         postRepository.stopListening()
                     }

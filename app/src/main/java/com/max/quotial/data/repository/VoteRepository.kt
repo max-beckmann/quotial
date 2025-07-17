@@ -13,8 +13,11 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class VoteRepository {
+@Singleton
+class VoteRepository @Inject constructor() {
     private val database = Firebase.database
 
     fun getVotesForUser(userId: String): Flow<Map<String, VoteType>> = callbackFlow {

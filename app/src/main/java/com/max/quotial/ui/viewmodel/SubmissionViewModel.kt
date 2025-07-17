@@ -9,15 +9,18 @@ import com.max.quotial.data.model.Group
 import com.max.quotial.data.model.Quote
 import com.max.quotial.data.repository.AuthRepository
 import com.max.quotial.data.repository.PostRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SubmissionViewModel : ViewModel() {
-    private val postRepository = PostRepository()
-    private val authRepository = AuthRepository()
-
+@HiltViewModel
+class SubmissionViewModel @Inject constructor(
+    private val postRepository: PostRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(PostUiState())
     val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
 
